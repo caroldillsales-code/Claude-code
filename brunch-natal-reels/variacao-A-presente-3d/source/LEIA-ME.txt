@@ -1,0 +1,4 @@
+Variação A — "Presente 3D" (Three.js 0.160 + JavaScript)
+Estrutura esperada: esta pasta "source" como "varA/" ao lado de ../assets, ../fonts e ../node_modules/three
+(npm i three@0.160.0). Servir a pasta pai por HTTP (python3 -m http.server 8765),
+python3 audio.py  -> audio.wav ;  node render.js -> varA.mp4 (Chromium headless + SwiftShader WebGL).

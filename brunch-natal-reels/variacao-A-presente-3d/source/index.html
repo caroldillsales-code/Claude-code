@@ -1,0 +1,391 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Play;src:url(../fonts/Playfair.ttf)}
+@font-face{font-family:PlayI;src:url(../fonts/PlayfairItalic.ttf)}
+@font-face{font-family:Vibes;src:url(../fonts/GreatVibes.ttf)}
+@font-face{font-family:Cinzel;src:url(../fonts/Cinzel.ttf)}
+@font-face{font-family:Mont;src:url(../fonts/Montserrat.ttf)}
+:root{--gold:#e5bd6c;--gold2:#f8e2a6;--cream:#fff4e2;--red:#a3192b}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#2a0509}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+canvas#gl{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.abs{position:absolute;left:0;top:0;width:100%;height:100%}
+.layer{position:absolute;left:0;right:0;opacity:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.gold{background:linear-gradient(105deg,#b8862f 0%,#f3d58e 30%,#fff7dc 45%,#f3d58e 55%,#b8862f 80%,#e5bd6c 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.cinzel{font-family:Cinzel;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.vibes{font-family:Vibes}
+.play{font-family:Play;font-weight:900}
+.mont{font-family:Mont}
+.sh{filter:drop-shadow(0 6px 18px rgba(20,2,5,.9))}
+.tsh{text-shadow:0 4px 24px rgba(20,2,5,.95),0 0 10px rgba(20,2,5,.8)}
+.pill{display:inline-flex;align-items:center;gap:22px;padding:22px 44px;border-radius:999px;border:3px solid var(--gold);background:linear-gradient(180deg,#8d1626,#560a15);color:var(--cream);box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,220,150,.15)}
+.pill svg{width:54px;height:54px;fill:var(--gold2)}
+.chip{font-family:Mont;font-weight:700;font-size:40px;color:var(--cream);padding:18px 34px;border-radius:999px;border:2.5px solid var(--gold);background:rgba(109,15,28,.88);box-shadow:0 8px 24px rgba(0,0,0,.45);display:inline-block;margin:11px}
+#cap{position:absolute;left:80px;right:170px;top:1395px;display:flex;justify-content:center;opacity:0}
+#capbox{padding:22px 36px;border-radius:28px;background:linear-gradient(180deg,rgba(58,8,18,.88),rgba(36,4,10,.92));border:2px solid rgba(229,189,108,.7);box-shadow:0 14px 40px rgba(0,0,0,.55);font-family:Mont;font-weight:800;font-size:46px;line-height:1.28;color:rgba(255,244,226,.38);text-align:center}
+#capbox span{display:inline-block;margin:0 .14em;transform-origin:50% 80%}
+#capbox span.on{color:#ffe7a8;text-shadow:0 0 18px rgba(255,200,100,.65)}
+</style></head>
+<body><div id="stage">
+<canvas id="gl" width="1080" height="1920"></canvas>
+<div class="abs" id="dim" style="background:#1c0306;opacity:0"></div>
+<div class="abs" style="background:linear-gradient(180deg,rgba(28,3,6,.75) 0%,rgba(28,3,6,0) 22%,rgba(28,3,6,0) 70%,rgba(28,3,6,.7) 100%)"></div>
+
+<!-- croissant title -->
+<div class="layer" id="tTitle" style="top:225px">
+  <div id="tt1" class="cinzel tsh" style="font-size:40px;color:var(--cream)">Uma mesa para partilhar</div>
+  <div id="tt2" class="vibes gold sh" style="font-size:132px;line-height:1.15;padding:0 30px">bons momentos</div>
+  <div id="tt3" class="play sh" style="font-size:168px;line-height:.95;margin-top:6px">BRUNCH</div>
+  <div id="tt4" class="play sh" style="font-size:132px;line-height:1">DE NATAL</div>
+</div>
+
+<!-- buffet title -->
+<div class="layer" id="tBuf" style="top:250px">
+  <div id="tb1" class="play gold sh" style="font-size:190px;line-height:1">BRUNCH</div>
+  <div id="tb2" class="vibes tsh" style="font-size:150px;color:var(--cream);line-height:1;margin-top:-10px">à vontade</div>
+  <div id="tb3" class="pill" style="margin-top:14px">
+    <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    <span class="mont" style="font-size:42px;font-weight:700">Música ao vivo suave</span>
+    <div id="eq" style="display:flex;gap:7px;align-items:flex-end;height:46px"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</div>
+
+<!-- includes -->
+<div class="layer" id="tInc" style="top:430px;padding:0 60px">
+  <div id="ti1" class="play gold sh" style="font-size:110px;line-height:1.1">O brunch inclui</div>
+  <div id="chips" style="display:flex;flex-wrap:wrap;justify-content:center;width:960px;margin-top:30px"></div>
+  <div id="ti2" class="vibes gold sh" style="font-size:108px;margin-top:26px;padding:0 30px">e muitas outras delícias…</div>
+</div>
+
+<!-- price -->
+<div class="layer" id="tPrice" style="top:540px">
+  <div id="card" style="width:800px;padding:56px 50px 48px;border-radius:44px;background:linear-gradient(170deg,#fffaf0,#f6e3c4);border:5px solid var(--gold);box-shadow:0 30px 90px rgba(0,0,0,.65);text-align:center;position:relative">
+    <div class="cinzel" style="font-size:34px;color:var(--red)">Brunch à vontade</div>
+    <div style="font-family:Play;font-weight:900;font-size:220px;line-height:1;color:#7a1020;letter-spacing:-4px"><span id="price">19,90</span>€</div>
+    <div class="play" style="font-size:52px;color:#3a0a10;font-weight:700">por pessoa</div>
+    <div style="height:3px;background:linear-gradient(90deg,transparent,#a3192b,transparent);margin:32px 0"></div>
+    <div id="fam">
+      <div class="play" style="font-size:46px;color:#3a0a10;font-weight:700">Bilhete família · 4 pessoas</div>
+      <div style="display:flex;align-items:baseline;justify-content:center;gap:30px;margin-top:6px">
+        <span class="mont" style="font-size:50px;color:#8a6a5a;font-weight:600;position:relative">79,60€<i id="strike" style="position:absolute;left:-6px;top:52%;height:5px;background:#a3192b;width:0"></i></span>
+        <span style="font-family:Play;font-weight:900;font-size:116px;color:#a3192b">69,90€</span>
+      </div>
+    </div>
+    <div id="seal" style="position:absolute;right:-40px;top:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fbe4a4,#d9a845 60%,#a87a25);box-shadow:0 12px 30px rgba(0,0,0,.5),inset 0 0 0 8px rgba(255,255,255,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#5a0a14;opacity:0">
+      <div class="mont" style="font-size:30px;font-weight:800;letter-spacing:.08em">POUPE</div>
+      <div style="font-family:Play;font-weight:900;font-size:60px;line-height:1">9,70€</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="layer" id="tCta" style="top:470px">
+  <div id="c1" class="play gold sh" style="font-size:96px;line-height:1.05">BRUNCH DE NATAL</div>
+  <div style="display:flex;flex-direction:column;gap:24px;align-items:center;margin-top:36px">
+    <div class="pill" id="c2"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg><span class="mont" style="font-size:46px;font-weight:700">Sábado, 5 de dezembro</span></div>
+    <div class="pill" id="c3"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span class="mont" style="font-size:46px;font-weight:700">das 10h às 14h</span></div>
+  </div>
+  <div id="c4" class="vibes gold sh" style="font-size:112px;margin-top:30px;padding:0 30px">Reserve já a sua mesa</div>
+  <div id="phone" style="margin-top:14px;display:flex;align-items:center;gap:30px;padding:30px 56px 30px 36px;border-radius:999px;border:5px solid var(--gold);background:linear-gradient(180deg,#a3192b,#5e0a16);box-shadow:0 20px 60px rgba(0,0,0,.6)">
+    <div id="ring" style="width:120px;height:120px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center">
+      <svg viewBox="0 0 24 24" style="width:70px;fill:#7a1020"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+    </div>
+    <div style="text-align:left">
+      <div class="cinzel" style="font-size:32px;color:var(--gold2)">Reservas</div>
+      <div style="font-family:Play;font-weight:900;font-size:98px;line-height:1;color:#fff">910 999 015</div>
+    </div>
+  </div>
+  <div class="pill" id="c5" style="margin-top:26px;padding:16px 38px"><svg viewBox="0 0 24 24" style="width:44px;height:44px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span class="play" style="font-size:42px;font-weight:700">Rua Biarritz 4B · Estoril</span></div>
+</div>
+
+<div id="cap"><div id="capbox"></div></div>
+<div class="abs" id="flash" style="background:#fff3d6;opacity:0;mix-blend-mode:screen"></div>
+<div class="abs" style="background:radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(20,2,5,.7) 100%)"></div>
+</div>
+
+<script type="importmap">{"imports":{"three":"../node_modules/three/build/three.module.js","three/addons/":"../node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const lerp=(a,b,k)=>a+(b-a)*k;
+const eOut=k=>1-Math.pow(1-k,3);
+const eInOut=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+const eBack=k=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2)};
+const eElastic=k=>k<=0?0:k>=1?1:Math.pow(2,-10*k)*Math.sin((k*10-.75)*(2*Math.PI)/3)+1;
+const eBounce=x=>{const n=7.5625,d=2.75;if(x<1/d)return n*x*x;if(x<2/d)return n*(x-=1.5/d)*x+.75;if(x<2.5/d)return n*(x-=2.25/d)*x+.9375;return n*(x-=2.625/d)*x+.984375};
+const win=(t,a,b,fi=.25,fo=.25)=>Math.min(seg(t,a,a+fi),1-seg(t,b-fo,b));
+function rng(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646}}
+const shine=(el,t,sp=.35,off=0)=>el.style.backgroundPosition=`${(100-((t*sp+off)%1)*160+30)}% 0`;
+function setT(el,op,tr){el=typeof el==='string'?$(el):el;el.style.opacity=op;if(tr!==undefined)el.style.transform=tr;}
+
+await document.fonts.load('90px PlayI');await document.fonts.load('170px Vibes');await document.fonts.ready;
+
+// ---------- renderer / scene ----------
+const renderer=new THREE.WebGLRenderer({canvas:$('gl'),antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.setSize(1080,1920,false);
+renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();
+const FOG=new THREE.Color(0x330711);
+scene.background=FOG;scene.fog=new THREE.Fog(FOG,8,30);
+const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(50,1080/1920,0.05,200);scene.add(camera);
+scene.add(new THREE.AmbientLight(0xffe0c0,0.35));
+const key=new THREE.DirectionalLight(0xffd9a0,2.2);key.position.set(3,6,8);scene.add(key);
+const rim=new THREE.DirectionalLight(0xff6070,1.0);rim.position.set(-5,2,-4);scene.add(rim);
+
+// backdrop glow attached to camera
+function radialTex(stops,size=512){const c=document.createElement('canvas');c.width=c.height=size;const g=c.getContext('2d');const gr=g.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);stops.forEach(([o,col])=>gr.addColorStop(o,col));g.fillStyle=gr;g.fillRect(0,0,size,size);const tx=new THREE.CanvasTexture(c);tx.colorSpace=THREE.SRGBColorSpace;return tx;}
+const back=new THREE.Mesh(new THREE.PlaneGeometry(140,250),new THREE.MeshBasicMaterial({map:radialTex([[0,'#6e1322'],[.5,'#3d0913'],[1,'#330711']]),fog:false,depthWrite:false}));
+back.position.set(0,6,-90);back.renderOrder=-10;camera.add(back);
+
+// bokeh attached to camera
+const soft=radialTex([[0,'rgba(255,255,255,1)'],[.35,'rgba(255,255,255,.55)'],[1,'rgba(255,255,255,0)']],128);
+const R=rng(7);
+const bokehG=new THREE.BufferGeometry();{const n=26,p=[];for(let i=0;i<n;i++)p.push((R()-.5)*30,(R()-.5)*52,-28-R()*20);bokehG.setAttribute('position',new THREE.Float32BufferAttribute(p,3));}
+const bokeh=new THREE.Points(bokehG,new THREE.PointsMaterial({map:soft,color:0xffc070,size:4.2,transparent:true,opacity:.22,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));
+camera.add(bokeh);
+
+// snow attached to camera (shader, deterministic in t)
+const snowG=new THREE.BufferGeometry();{const n=1400,p=[],a=[];for(let i=0;i<n;i++){p.push((R()-.5)*14,(R()-.5)*22,-2.5-R()*16);a.push(R(),R(),R());}
+snowG.setAttribute('position',new THREE.Float32BufferAttribute(p,3));snowG.setAttribute('rnd',new THREE.Float32BufferAttribute(a,3));}
+const snowM=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+ uniforms:{uT:{value:0},uA:{value:1}},
+ vertexShader:`attribute vec3 rnd;uniform float uT;varying float vA;
+  void main(){vec3 p=position;float sp=.6+rnd.x*1.1;p.y=mod(p.y-uT*sp+11.,22.)-11.;p.x+=sin(uT*(.6+rnd.y)+rnd.z*6.28)*.35;
+  vec4 mv=modelViewMatrix*vec4(p,1.);gl_PointSize=(10.+rnd.y*16.)*(4./-mv.z);vA=.35+.5*rnd.z;gl_Position=projectionMatrix*mv;}`,
+ fragmentShader:`uniform float uA;varying float vA;void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.0,d);gl_FragColor=vec4(vec3(1.,.97,.92),a*vA*uA);}`});
+const snow=new THREE.Points(snowG,snowM);snow.frustumCulled=false;camera.add(snow);
+
+// ---------- textures ----------
+const loader=new THREE.TextureLoader();
+const load=u=>new Promise(r=>loader.load(u,tx=>{tx.colorSpace=THREE.SRGBColorSpace;tx.anisotropy=8;r(tx)}));
+const [tCro,tCake,tFruit,tMuf,tBuf]=await Promise.all(['croissant','cake','fruit','muffin','buffet'].map(n=>load(`../assets/${n}.jpg`)));
+
+// ---------- photo cards ----------
+const goldMat=new THREE.MeshStandardMaterial({color:0xf2c35a,metalness:1,roughness:.24,envMapIntensity:1.8});
+const CW=2.6,CH=3.25;
+function card(tx,pos,ry,rz=0){
+  const a=tx.image.width/tx.image.height,ca=CW/CH;
+  if(a>ca){tx.repeat.set(ca/a,1);tx.offset.set((1-ca/a)/2,0);}else{tx.repeat.set(1,a/ca);tx.offset.set(0,(1-a/ca)/2);}
+  const g=new THREE.Group();
+  const fm=goldMat.clone();fm.transparent=true;const fr=new THREE.Mesh(new RoundedBoxGeometry(CW+.16,CH+.16,.09,4,.05),fm);g.add(fr);
+  const ph=new THREE.Mesh(new THREE.PlaneGeometry(CW,CH),new THREE.MeshBasicMaterial({map:tx,transparent:true}));g.userData.mats=[fm,ph.material];ph.position.z=.05;g.add(ph);
+  g.position.copy(pos);g.rotation.set(0,ry,rz);scene.add(g);return g;}
+const cards=[
+  card(tCro,new THREE.Vector3(0,0,0),0),
+  card(tCake,new THREE.Vector3(2.0,.5,-11),-.22,.03),
+  card(tFruit,new THREE.Vector3(-2.0,-.4,-22),.22,-.03),
+  card(tMuf,new THREE.Vector3(1.8,.4,-33),-.18,.02),
+  card(tBuf,new THREE.Vector3(0,0,-44),0),
+];
+function hero(i,k,dist0=i===4?7.6:6.4){ // camera pose for card i, hold progress k
+  const c=cards[i];const d=dist0-0.55*k;const lat=lerp(-.18,.18,k);
+  const pos=new THREE.Vector3(lat,-0.1,d).applyEuler(c.rotation).add(c.position);
+  const look=new THREE.Vector3(lat*.3,i===0?0.42:i===4?0.9:0.12,0).applyEuler(c.rotation).add(c.position);
+  return {pos,look,roll:Math.sin(k*Math.PI)*0.01};}
+
+// ---------- gift box ----------
+const BOX=new THREE.Vector3(0,-1.25,13);
+const gift=new THREE.Group();gift.position.copy(BOX);scene.add(gift);
+const redMat=new THREE.MeshStandardMaterial({color:0x8a1022,roughness:.38,metalness:.15});
+const body=new THREE.Mesh(new RoundedBoxGeometry(1.4,1.1,1.4,4,.05),redMat);gift.add(body);
+const rb1=new THREE.Mesh(new THREE.BoxGeometry(.24,1.115,1.415),goldMat);gift.add(rb1);
+const rb2=new THREE.Mesh(new THREE.BoxGeometry(1.415,1.115,.24),goldMat);gift.add(rb2);
+const lid=new THREE.Group();lid.position.set(0,.55,0);gift.add(lid);
+const lidM=new THREE.Mesh(new RoundedBoxGeometry(1.52,.3,1.52,4,.05),redMat);lidM.position.y=.15;lid.add(lidM);
+const lr1=new THREE.Mesh(new THREE.BoxGeometry(.24,.305,1.535),goldMat);lr1.position.y=.15;lid.add(lr1);
+const lr2=new THREE.Mesh(new THREE.BoxGeometry(1.535,.305,.24),goldMat);lr2.position.y=.15;lid.add(lr2);
+const bow=new THREE.Group();bow.position.y=.33;lid.add(bow);
+for(const s of[-1,1]){const t=new THREE.Mesh(new THREE.TorusGeometry(.24,.075,16,40),goldMat);t.position.set(s*.22,.12,0);t.rotation.set(0,s*.35,s*.55);t.scale.set(1,.75,1);bow.add(t);
+  const tail=new THREE.Mesh(new THREE.BoxGeometry(.12,.42,.03),goldMat);tail.position.set(s*.16,-.05,.12);tail.rotation.set(-.5,0,s*.5);bow.add(tail);}
+const knot=new THREE.Mesh(new THREE.SphereGeometry(.11,24,16),goldMat);knot.position.y=.1;bow.add(knot);
+const glowL=new THREE.PointLight(0xffc060,0,6,1.6);glowL.position.set(0,.7,0);gift.add(glowL);
+const beam=new THREE.Mesh(new THREE.PlaneGeometry(3.2,4.2),new THREE.MeshBasicMaterial({map:radialTex([[0,'rgba(255,220,140,1)'],[.4,'rgba(255,170,60,.35)'],[1,'rgba(255,150,40,0)']]),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,opacity:0}));
+beam.position.set(0,1.9,0.1);gift.add(beam);
+
+// ---------- particle text from box ----------
+const TXT_Y=BOX.y+2.35;
+const PT=(()=>{const c=document.createElement('canvas');c.width=1200;c.height=520;const g=c.getContext('2d');g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';
+  g.font='96px PlayI';g.fillText('Tem planos para',600,120);g.font='190px Vibes';g.fillText('5 de dezembro?',600,345);
+  const d=g.getImageData(0,0,1200,520).data;const pts=[];for(let y=0;y<520;y+=2)for(let x=0;x<1200;x+=2)if(d[(y*1200+x)*4+3]>140)pts.push([x,y]);return pts;})();
+const RP=rng(99);for(let i=PT.length-1;i>0;i--){const j=Math.floor(RP()*(i+1));[PT[i],PT[j]]=[PT[j],PT[i]];}
+const NP=Math.min(11000,PT.length);
+const pg=new THREE.BufferGeometry();{const tg=[],st=[],rn=[],col=[];
+ for(let i=0;i<NP;i++){const [x,y]=PT[i];tg.push((x-600)/1200*3.25,-(y-260)/1200*3.25+TXT_Y,BOX.z+.2);
+  st.push(BOX.x+(RP()-.5)*.9,BOX.y+.7,BOX.z+(RP()-.5)*.9);rn.push(RP(),RP(),RP(),RP());
+  const line2=y>210;col.push(...(line2?[1,.78,.38]:[1,.93,.8]));}
+ pg.setAttribute('position',new THREE.Float32BufferAttribute(tg,3));pg.setAttribute('start',new THREE.Float32BufferAttribute(st,3));
+ pg.setAttribute('rnd',new THREE.Float32BufferAttribute(rn,4));pg.setAttribute('col',new THREE.Float32BufferAttribute(col,3));}
+const pM=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+ uniforms:{uT:{value:0}},
+ vertexShader:`attribute vec3 start;attribute vec4 rnd;attribute vec3 col;uniform float uT;varying float vA;varying vec3 vC;
+  float eo(float k){return 1.-pow(1.-k,3.);}
+  void main(){
+   float k=clamp((uT-1.62-rnd.x*.32)/.62,0.,1.);float e=eo(k);
+   vec3 arc=vec3(sin(rnd.y*6.283)*1.1,1.6+rnd.z,cos(rnd.y*6.283)*.7)*sin(3.14159*k);
+   vec3 p=mix(start,position,e)+arc*(1.-e*.2);
+   p+=vec3(sin(uT*2.+rnd.w*20.)*.008,cos(uT*1.7+rnd.y*20.)*.008,0.)*k;
+   float x=clamp((uT-3.15)/.6,0.,1.);x=x*x;
+   vec3 dir=normalize(vec3(position.x*1.5+(rnd.y-.5)*2.,position.y-${TXT_Y.toFixed(3)}+(rnd.z-.5)*2.,1.2+rnd.w));
+   p+=dir*x*6.;
+   vec4 mv=modelViewMatrix*vec4(p,1.);
+   gl_PointSize=(30.+rnd.w*16.)*(1.+ (1.-k)*1.2)/-mv.z;
+   float tw=.75+.25*sin(uT*9.+rnd.x*40.);
+   vA=step(.001,k)*tw*(1.-x)*(.6+.6*k);vC=col;gl_Position=projectionMatrix*mv;}`,
+ fragmentShader:`varying float vA;varying vec3 vC;void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.05,d);gl_FragColor=vec4(vC*(1.2+(1.-d*2.)*.6),a*vA);}`});
+const ptext=new THREE.Points(pg,pM);ptext.frustumCulled=false;scene.add(ptext);
+
+// ---------- price stage: coins & stars ----------
+const STG=new THREE.Vector3(0,26,-44);
+const NC=36;
+const coinGeo=new THREE.CylinderGeometry(.3,.3,.06,40);coinGeo.rotateX(Math.PI/2);
+const coins=new THREE.InstancedMesh(coinGeo,new THREE.MeshStandardMaterial({color:0xffcf5a,metalness:1,roughness:.3,emissive:0x6a4200,envMapIntensity:2.2}),NC);scene.add(coins);
+const starShape=new THREE.Shape();for(let i=0;i<10;i++){const r=i%2?.11:.26,a=i/10*Math.PI*2+Math.PI/2;i?starShape.lineTo(Math.cos(a)*r,Math.sin(a)*r):starShape.moveTo(Math.cos(a)*r,Math.sin(a)*r);}
+const starGeo=new THREE.ExtrudeGeometry(starShape,{depth:.05,bevelEnabled:true,bevelSize:.02,bevelThickness:.02,bevelSegments:2});starGeo.center();
+const NS=14;const stars=new THREE.InstancedMesh(starGeo,new THREE.MeshStandardMaterial({color:0xffe08a,metalness:1,roughness:.25,emissive:0x7a5000,envMapIntensity:2.2}),NS);scene.add(stars);
+const frac=x=>x-Math.floor(x);
+// coin i spawn time shared with audio: 18.2 + frac(i*0.618034)*1.6, fall over 1.5s
+function fallObj(i,t,N,salt){const ts=18.2+frac(i*0.618034+salt)*1.6;const u=(t-ts)/1.5;
+  const x=(frac(i*0.371+salt*1.3)-.5)*5.6,z=(frac(i*0.219+salt*.7)-.5)*3.2-0.5;
+  const y=5.6-11.8*Math.pow(clamp(u,0,1),1.6);
+  return {vis:u>0&&u<1,pos:new THREE.Vector3(STG.x+x,STG.y+y,STG.z+z),rx:t*(3+i%5)+i,ry:t*(2+i%3)+i*2};}
+const M4=new THREE.Matrix4(),Q=new THREE.Quaternion(),E=new THREE.Euler(),S1=new THREE.Vector3(1,1,1),S0=new THREE.Vector3(0,0,0);
+
+// ---------- CTA baubles ----------
+const stL=new THREE.PointLight(0xffe2b0,40,14,1.5);stL.position.set(STG.x+1.5,STG.y+3.5,STG.z+4);scene.add(stL);
+const baubles=[];const BX=[-2.35,-1.5,-.62,.55,1.45,2.35];const BL=[1.5,2.3,1.25,1.9,1.35,2.15];
+BX.forEach((x,i)=>{const g=new THREE.Group();g.position.set(STG.x+x,STG.y+5.4,STG.z-0.6+(i%2)*.4);scene.add(g);
+  const L=BL[i],r=i%3==1?.42:.34;
+  const str=new THREE.Mesh(new THREE.CylinderGeometry(.008,.008,L,6),goldMat);str.position.y=-L/2;g.add(str);
+  const cap=new THREE.Mesh(new THREE.CylinderGeometry(.08,.09,.12,20),goldMat);cap.position.y=-L-.02;g.add(cap);
+  const ball=new THREE.Mesh(new THREE.SphereGeometry(r,48,32),new THREE.MeshStandardMaterial({color:i%2?0xf2c35a:0xe0233f,metalness:i%2?.95:.55,roughness:.2,envMapIntensity:2.4,emissive:i%2?0x3a2400:0x3a0008}));ball.position.y=-L-.08-r;g.add(ball);
+  baubles.push({g,L});});
+
+// ---------- DOM helpers ----------
+const TT3=[...'BRUNCH'],TT4=[...'DE NATAL'];
+function spl(id,arr){const el=$(id);el.textContent='';return arr.map(ch=>{const s=document.createElement('span');s.textContent=ch===' '?' ':ch;s.className='gold';s.style.display='inline-block';el.appendChild(s);return s;});}
+const L3=spl('tt3',TT3),L4=spl('tt4',TT4);
+const items=['Bebidas','Cafés','Bolos','Sobremesas','Pães','Panquecas','Pão de queijo','Frutas','Iogurte','Ovos'];
+const chips=items.map(n=>{const d=document.createElement('div');d.className='chip';d.textContent=n;$('chips').appendChild(d);return d;});
+const eqBars=[...document.querySelectorAll('#eq i')];eqBars.forEach(b=>b.style.cssText='display:block;width:9px;background:#f8e2a6;border-radius:4px');
+
+// karaoke captions [start,end,text,slideDir]
+const CAPS=[[0.2,1.55,'Um presente de Natal para si…',0],[4.25,6.15,'Croissants dourados para começar bem o dia',0],
+ [6.85,8.55,'Panetones com sabor a Natal',1],[9.25,10.75,'Frutas frescas e coloridas',-1],[11.45,12.95,'Bolos e docinhos inspirados nas tradições natalinas',1],
+ [14.7,15.95,'Sirva-se à vontade, ao som de música ao vivo',0]];
+let capIdx=-1,capSpans=[];
+function caption(t){let idx=CAPS.findIndex(c=>t>=c[0]-.2&&t<=c[1]+.2);const cap=$('cap');
+  if(idx<0){cap.style.opacity=0;return;}
+  const [a,b,txt,dir]=CAPS[idx];
+  if(idx!==capIdx){capIdx=idx;$('capbox').innerHTML=txt.split(' ').map(w=>`<span>${w}</span>`).join(' ');capSpans=[...$('capbox').children];}
+  const kin=seg(t,a-.2,a+.15),kout=seg(t,b,b+.2);
+  cap.style.opacity=kin*(1-kout);cap.style.transform=`translate(${(1-eOut(kin))*dir*260}px,${(1-eOut(kin))*40}px) scale(${lerp(.92,1,eOut(kin))})`;
+  const n=capSpans.length,span=(b-a-.35);
+  capSpans.forEach((s,i)=>{const on=a+span*i/n;const k=seg(t,on,on+.18);s.classList.toggle('on',t>=on);s.style.transform=`translateY(${-Math.sin(k*Math.PI)*10}px) scale(${1+Math.sin(k*Math.PI)*.12})`;});
+}
+
+// ---------- camera timeline ----------
+const boxCam=k=>{const a=lerp(.55,0,eOut(clamp(k/0.55)));const d=lerp(6.9,6.3,k);
+  return {pos:new THREE.Vector3(BOX.x+Math.sin(a)*d,BOX.y+1.25+lerp(.5,0,eOut(clamp(k/.55))),BOX.z+Math.cos(a)*d),look:new THREE.Vector3(BOX.x,BOX.y+1.2,BOX.z),roll:0};};
+const incCam={pos:new THREE.Vector3(0,.35,-44+11.5),look:new THREE.Vector3(0,.1,-44),roll:0};
+const stgCam=k=>({pos:new THREE.Vector3(STG.x+Math.sin(k*.6)*.3,STG.y,STG.z+lerp(10.5,9.6,k)),look:new THREE.Vector3(STG.x,STG.y-.15,STG.z),roll:0});
+function blend(A,B,k,arc=new THREE.Vector3(),roll=0){const e=eInOut(k);
+  return {pos:A.pos.clone().lerp(B.pos,e).addScaledVector(arc,Math.sin(Math.PI*e)),look:A.look.clone().lerp(B.look,e),roll:lerp(A.roll,B.roll,e)+Math.sin(Math.PI*e)*roll};}
+const HOLDS=[[3.75,6.2],[6.8,8.6],[9.2,10.8],[11.4,13.0],[13.6,16.0]];
+function camAt(t){
+  if(t<3.15)return boxCam(t/3.15);
+  if(t<3.75){const A=boxCam(1),B=hero(0,0);return blend(A,B,seg(t,3.15,3.75),new THREE.Vector3(0,.5,0),0);}
+  for(let i=0;i<5;i++){const [a,b]=HOLDS[i];
+    if(t>=a&&t<b)return hero(i,seg(t,a,b));
+    if(i<4&&t>=b&&t<HOLDS[i+1][0]){const k=seg(t,b,HOLDS[i+1][0]);const dx=cards[i+1].position.x-cards[i].position.x;
+      return blend(hero(i,1),hero(i+1,0),k,new THREE.Vector3(0,.9,0),-Math.sign(dx)*.12);}}
+  if(t<16.6)return blend(hero(4,1),incCam,seg(t,16.0,16.6));
+  if(t<18.0)return {pos:incCam.pos.clone().add(new THREE.Vector3(0,0,seg(t,16.6,18)*.6)),look:incCam.look,roll:0};
+  if(t<18.7)return blend({pos:incCam.pos.clone().add(new THREE.Vector3(0,0,.6)),look:incCam.look,roll:0},stgCam(0),seg(t,18.0,18.7),new THREE.Vector3(0,0,3),0);
+  return stgCam(seg(t,18.7,25));
+}
+const CUTS=[3.15,6.2,8.6,10.8,13.0,16.0,18.0];
+
+// ---------- render ----------
+const UP=new THREE.Vector3(0,1,0);
+function render(t){
+  // camera
+  const c=camAt(t);camera.position.copy(c.pos);camera.up.copy(UP);camera.lookAt(c.look);camera.rotateZ(c.roll);
+  scene.fog.near=t<3.15?6:lerp(6,8,seg(t,3.15,3.75));scene.fog.far=t<3.15?14:lerp(14,30,seg(t,3.15,3.75));
+  // gift
+  gift.visible=t<3.6;
+  gift.rotation.y=lerp(-1.3,0,eOut(seg(t,0,1.45)));gift.position.y=BOX.y+Math.sin(t*2.2)*.04;
+  const pull=seg(t,1.4,1.62);bow.scale.setScalar(1+Math.sin(pull*Math.PI)*.25);
+  const ko=eOut(seg(t,1.58,2.3));lid.position.set(ko*3.2,.55+ko*1.1+Math.sin(ko*Math.PI)*.6,-ko*2.6);lid.rotation.set(-ko*1.2,ko*.9,-ko*.8);
+  const gl=seg(t,1.55,1.9)*(1-seg(t,2.8,3.4));glowL.intensity=gl*9;beam.material.opacity=gl*.55*(0.85+.15*Math.sin(t*12));
+  pM.uniforms.uT.value=t;ptext.visible=t>1.6&&t<3.85;
+  // snow / bokeh intensity
+  snowM.uniforms.uT.value=t;
+  snowM.uniforms.uA.value=t<3.7?1:(t<16?.45:1);
+  // coins & stars
+  for(let i=0;i<NC;i++){const o=fallObj(i,t,NC,0);E.set(o.rx,o.ry,0);Q.setFromEuler(E);M4.compose(o.pos,Q,o.vis?S1:S0);coins.setMatrixAt(i,M4);}
+  coins.instanceMatrix.needsUpdate=true;coins.visible=t>18&&t<21.2;
+  for(let i=0;i<NS;i++){const o=fallObj(i,t,NS,.37);E.set(o.rx*.5,o.ry,o.rx*.3);Q.setFromEuler(E);M4.compose(o.pos,Q,o.vis?S1:S0);stars.setMatrixAt(i,M4);}
+  stars.instanceMatrix.needsUpdate=true;stars.visible=coins.visible;
+  // baubles
+  baubles.forEach((b,i)=>{const ts=21.0+i*.09;const k=seg(t,ts,ts+.55);b.g.visible=t>ts;
+    b.g.position.y=STG.y+5.4+(1-eBack(k))*4.5;
+    const dt=Math.max(0,t-ts-.33);b.g.rotation.z=Math.sin(dt*3.1+i)*.22*Math.exp(-dt*.9)+Math.sin(t*1.5+i*1.3)*.05;b.g.rotation.x=Math.sin(t*1.1+i)*.04;});
+  cards.forEach(cd=>{const op=1-seg(camera.position.distanceTo(cd.position),11,17);cd.visible=op>0.001;cd.userData.mats.forEach(m=>m.opacity=op);});
+  renderer.render(scene,camera);
+
+  // ---------- DOM ----------
+  caption(t);
+  // title over croissant: letters fly from camera (coherent with dive)
+  setT('tTitle',win(t,3.55,6.2,.1,.3));
+  setT('tt1',seg(t,3.65,4.0),`translateY(${lerp(-30,0,eOut(seg(t,3.65,4.0)))}px)`);
+  const kv=seg(t,3.85,4.6);$('tt2').style.clipPath=`inset(0 ${100-eInOut(kv)*100}% 0 0)`;shine($('tt2'),t,.5);
+  [...L3,...L4].forEach((s,i)=>{const a=3.6+i*.05,k=seg(t,a,a+.45);s.style.opacity=clamp(k*2.5);
+    s.style.transform=`scale(${lerp(4,1,eOut(k))}) translateY(${lerp(60,0,eOut(k))}px)`;s.style.filter=`blur(${lerp(14,0,k)}px)`;shine(s,t,.45,i*.02);});
+  // buffet title
+  setT('tBuf',win(t,13.4,16.05,.1,.25),`scale(${lerp(1,1.05,seg(t,13.6,16))})`);
+  const kb=seg(t,13.55,14.05);setT('tb1',clamp(kb*2),`scale(${lerp(3.2,1,eOut(kb))})`);$('tb1').style.filter=`blur(${lerp(12,0,kb)}px) drop-shadow(0 6px 18px rgba(20,2,5,.9))`;shine($('tb1'),t,.4);
+  const kb2=seg(t,13.9,14.6);$('tb2').style.clipPath=`inset(0 ${100-eInOut(kb2)*100}% 0 0)`;
+  const kb3=seg(t,14.3,14.75);setT('tb3',clamp(kb3*2),`translateY(${lerp(80,0,eBack(kb3))}px)`);
+  eqBars.forEach((b,i)=>b.style.height=(12+Math.abs(Math.sin(t*(7+i*1.7)+i))*32)+'px');
+  // includes
+  $('dim').style.opacity=.5*win(t,16.0,18.15,.5,.3);
+  setT('tInc',win(t,16.1,18.15,.2,.25));
+  setT('ti1',seg(t,16.15,16.55),`translateY(${lerp(-40,0,eOut(seg(t,16.15,16.55)))}px)`);shine($('ti1'),t,.4);
+  chips.forEach((ch,i)=>{const a=16.45+i*.11,k=seg(t,a,a+.35);ch.style.opacity=clamp(k*2);ch.style.transform=`scale(${eBack(k)}) translateZ(0)`;});
+  const k5=seg(t,17.35,17.95);$('ti2').style.clipPath=`inset(0 ${100-eInOut(k5)*100}% 0 0)`;shine($('ti2'),t,.5);
+  // price: card falls with bounce (coherent with coins)
+  setT('tPrice',win(t,18.25,21.15,.05,.3));
+  const kc=seg(t,18.25,18.9);$('card').style.transform=`translateY(${lerp(-1500,0,eBounce(kc))}px) rotate(${lerp(-6,0,eOut(kc))}deg)`;
+  const kp=eOut(seg(t,18.6,19.4));$('price').textContent=(19.9*kp).toFixed(2).replace('.',',');
+  $('price').parentElement.style.transform=`scale(${1+Math.sin(seg(t,19.4,19.7)*Math.PI)*.12})`;
+  const kf=seg(t,19.75,20.15);setT('fam',clamp(kf*2),`translateY(${lerp(40,0,eOut(kf))}px)`);
+  $('strike').style.width=(eOut(seg(t,20.05,20.3))*112)+'%';
+  const ks=seg(t,20.3,20.95);setT('seal',clamp(ks*4),`scale(${lerp(2.4,1,eOut(clamp(ks*1.6)))*(1+Math.sin(clamp(ks*1.6)*Math.PI)*-.08)}) rotate(${lerp(-40,12,eOut(ks))}deg)`);
+  // CTA
+  setT('tCta',win(t,21.1,26,.2,.01));
+  const k1=seg(t,21.25,21.7);setT('c1',clamp(k1*2),`translateY(${lerp(-50,0,eOut(k1))}px)`);shine($('c1'),t,.35);
+  const k2=seg(t,21.55,22.0);setT('c2',clamp(k2*2),`translateX(${lerp(-700,0,eBack(k2))}px)`);
+  const k3=seg(t,21.75,22.2);setT('c3',clamp(k3*2),`translateX(${lerp(700,0,eBack(k3))}px)`);
+  const k4=seg(t,22.05,22.8);$('c4').style.clipPath=`inset(0 ${100-eInOut(k4)*100}% 0 0)`;shine($('c4'),t,.5);
+  const kph=seg(t,22.6,23.05);const pulse=t>23.05?(Math.sin((t-23.05)*Math.PI*2/1.1)*.5+.5):0;
+  setT('phone',clamp(kph*2),`scale(${eBack(kph)*(1+pulse*.035)})`);
+  const pr=t>23.05?((t-23.05)%1.1)/1.1:0;$('phone').style.boxShadow=`0 0 0 ${pr*44}px rgba(229,189,108,${(1-pr)*.55}),0 20px 60px rgba(0,0,0,.6)`;
+  const rk=t>22.65?((t-22.65)%2.2):9;$('ring').style.transform=`rotate(${rk<.5?Math.sin(rk*60)*14*(1-rk/.5):0}deg)`;
+  const k5b=seg(t,23.0,23.45);setT('c5',clamp(k5b*2),`translateY(${lerp(60,0,eOut(k5b))}px)`);
+  // flashes
+  let fl=0;for(const cc of CUTS){const d=t-cc;if(d>.3&&d<.75)fl=Math.max(fl,Math.sin(seg(d,.3,.75)*Math.PI)*.18);}
+  const d1=t-1.6;if(d1>0&&d1<.4)fl=Math.max(fl,(1-d1/.4)*.45);
+  const d2=t-19.4;if(d2>0&&d2<.25)fl=Math.max(fl,(1-d2/.25)*.25);
+  $('flash').style.opacity=fl;
+}
+window.render=render;render(0);window.READY=true;
+</script>
+</body></html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Play;src:url(fonts/Playfair.ttf)}
+@font-face{font-family:PlayI;src:url(fonts/PlayfairItalic.ttf)}
+@font-face{font-family:Vibes;src:url(fonts/GreatVibes.ttf)}
+@font-face{font-family:Cinzel;src:url(fonts/Cinzel.ttf)}
+@font-face{font-family:Mont;src:url(fonts/Montserrat.ttf)}
+:root{--gold:#e5bd6c;--gold2:#f8e2a6;--cream:#fff4e2;--red:#a3192b}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#1c0306}
+#gl{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#ui{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.sc{position:absolute;inset:0;opacity:0}
+.w{position:absolute;left:0;right:0;text-align:center;white-space:nowrap}
+.goldtxt{background:linear-gradient(105deg,#b8862f 0%,#f3d58e 30%,#fff7dc 45%,#f3d58e 55%,#b8862f 80%,#e5bd6c 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.cinzel{font-family:Cinzel;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.vibes{font-family:Vibes}
+.play{font-family:Play;font-weight:900}
+.mont{font-family:Mont}
+.cream{color:var(--cream)}
+.ts{text-shadow:0 0 24px rgba(30,3,7,.9),0 6px 22px rgba(0,0,0,.8)}
+.ds{filter:drop-shadow(0 8px 18px rgba(0,0,0,.85))}
+.L{display:inline-block}
+.pill{display:inline-flex;align-items:center;gap:22px;padding:20px 44px;border-radius:999px;border:3px solid var(--gold);background:linear-gradient(180deg,#8d1626,#560a15);color:var(--cream);box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,220,150,.15)}
+.pill svg{width:52px;height:52px;fill:var(--gold2)}
+.chip{font-family:Mont;font-weight:700;font-size:42px;color:var(--cream);padding:18px 34px;border-radius:999px;border:2.5px solid var(--gold);background:rgba(109,15,28,.88);box-shadow:0 8px 24px rgba(0,0,0,.45);display:inline-block;margin:12px}
+.note{position:absolute;font-family:Play;font-size:70px;color:var(--gold2);text-shadow:0 0 20px rgba(255,200,120,.8)}
+</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<canvas id="gl" width="1080" height="1920"></canvas>
+<div id="ui">
+  <!-- HOOK -->
+  <div class="sc" id="hook">
+    <div class="w play cream ts" id="hS" style="top:1010px;font-size:130px">Sábado</div>
+    <div class="w ts" id="hM" style="top:1170px;font-size:100px;font-family:PlayI;color:#ffe2b0">de manhã</div>
+    <div class="w vibes goldtxt ds" id="hE" style="top:1270px;font-size:180px;line-height:1.3">em Estoril…</div>
+  </div>
+  <!-- TITLE -->
+  <div class="sc" id="ttl">
+    <div class="w cinzel cream ts" id="tA" style="top:430px;font-size:42px">Uma mesa para partilhar</div>
+    <div class="w vibes goldtxt ds" id="tB" style="top:480px;font-size:150px;line-height:1.3">bons momentos</div>
+    <div class="w play goldtxt ds" id="tC" style="top:700px;font-size:240px;line-height:1">BRUNCH</div>
+    <div class="w play goldtxt ds" id="tD" style="top:950px;font-size:186px;line-height:1">DE NATAL</div>
+  </div>
+  <!-- CLOSE-UPS: 4 groups -->
+  <div class="sc" id="cl">
+    <div id="g0" style="position:absolute;inset:0"><div class="w play goldtxt ds sp" style="top:1130px;font-size:120px">Croissants</div><div class="w vibes cream ts sp" style="top:1250px;font-size:170px;line-height:1.3">quentinhos</div></div>
+    <div id="g1" style="position:absolute;inset:0"><div class="w play goldtxt ds sp" style="top:1130px;font-size:140px">Panetones</div><div class="w vibes cream ts sp" style="top:1280px;font-size:130px;line-height:1.3">de tradição natalina</div></div>
+    <div id="g2" style="position:absolute;inset:0"><div class="w play goldtxt ds sp" style="top:1130px;font-size:140px">Frutas</div><div class="w vibes cream ts sp" style="top:1270px;font-size:170px;line-height:1.3">fresquinhas</div></div>
+    <div id="g3" style="position:absolute;inset:0"><div class="w play goldtxt ds sp" style="top:1130px;font-size:130px">Docinhos</div><div class="w vibes cream ts sp" style="top:1260px;font-size:170px;line-height:1.3">de Natal</div></div>
+  </div>
+  <!-- BUFFET -->
+  <div class="sc" id="buf">
+    <div class="w play goldtxt ds" id="bB" style="top:420px;font-size:220px;line-height:1">BRUNCH</div>
+    <div class="w vibes cream ts" id="bV" style="top:620px;font-size:190px;line-height:1.3">à vontade</div>
+    <div class="w" id="bM" style="top:1230px"><div class="pill" id="bMp">
+      <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span class="mont" style="font-size:46px;font-weight:700">Música ao vivo suave</span>
+      <span id="eq" style="display:inline-flex;gap:7px;align-items:flex-end;height:50px"><i></i><i></i><i></i><i></i><i></i></span></div></div>
+    <div id="notes"></div>
+  </div>
+  <!-- INCLUI -->
+  <div class="sc" id="inc">
+    <div class="w play goldtxt ds" id="iT" style="top:470px;font-size:116px">O brunch inclui</div>
+    <div id="chips" style="position:absolute;top:640px;left:60px;width:960px;display:flex;flex-wrap:wrap;justify-content:center"></div>
+    <div class="w vibes goldtxt ds" id="iD" style="top:1210px;font-size:116px;line-height:1.3">e muitas outras delícias…</div>
+  </div>
+  <!-- PRICE -->
+  <div class="sc" id="pr" style="perspective:1800px">
+    <div id="card" style="position:absolute;left:120px;top:560px;width:800px;padding:60px 50px 50px;border-radius:44px;background:linear-gradient(170deg,#fffaf0,#f6e3c4);border:5px solid var(--gold);box-shadow:0 30px 90px rgba(0,0,0,.6);text-align:center;transform-style:preserve-3d">
+      <div class="cinzel" style="font-size:34px;color:var(--red)">Brunch à vontade</div>
+      <div id="pnum" style="font-family:Play;font-weight:900;font-size:230px;line-height:1;color:#7a1020;letter-spacing:-4px"><span id="price">0,00</span>€</div>
+      <div class="play" style="font-size:54px;color:#3a0a10;font-weight:700">por pessoa</div>
+      <div style="height:3px;background:linear-gradient(90deg,transparent,#a3192b,transparent);margin:36px 0"></div>
+      <div id="fam">
+        <div class="play" style="font-size:48px;color:#3a0a10;font-weight:700">Bilhete família · 4 pessoas</div>
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:30px;margin-top:6px">
+          <span class="mont" style="font-size:52px;color:#8a6a5a;font-weight:600;position:relative">79,60€<i id="strike" style="position:absolute;left:-6px;top:52%;height:5px;background:#a3192b;width:0"></i></span>
+          <span style="font-family:Play;font-weight:900;font-size:120px;color:#a3192b">69,90€</span>
+        </div>
+      </div>
+      <div id="seal" style="position:absolute;left:-60px;top:-90px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fbe4a4,#d9a845 60%,#a87a25);box-shadow:0 12px 30px rgba(0,0,0,.5),inset 0 0 0 8px rgba(255,255,255,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#5a0a14">
+        <div class="mont" style="font-size:30px;font-weight:800;letter-spacing:.08em">POUPE</div>
+        <div style="font-family:Play;font-weight:900;font-size:62px;line-height:1">9,70€</div>
+      </div>
+    </div>
+  </div>
+  <!-- CTA -->
+  <div class="sc" id="cta">
+    <div class="w play goldtxt ds" id="cT" style="top:330px;font-size:100px;line-height:1.05">BRUNCH DE NATAL</div>
+    <div class="w" id="cD" style="top:470px"><div class="pill"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg><span class="mont" style="font-size:48px;font-weight:700">Sábado, 5 de dezembro</span></div></div>
+    <div class="w" id="cH" style="top:585px"><div class="pill"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span class="mont" style="font-size:48px;font-weight:700">das 10h às 14h</span></div></div>
+    <div class="w vibes" id="cR" style="top:690px;font-size:130px;line-height:1.3;color:#fff1c8">Reserve já a sua mesa</div>
+    <div class="w" id="cP" style="top:880px"><div id="phone" style="display:inline-flex;align-items:center;gap:30px;padding:30px 54px 30px 36px;border-radius:999px;border:5px solid var(--gold);background:linear-gradient(180deg,#a3192b,#5e0a16)">
+      <div id="ring" style="width:124px;height:124px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 24 24" style="width:72px;fill:#7a1020"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      </div>
+      <div style="text-align:left"><div class="cinzel" style="font-size:32px;color:var(--gold2)">Reservas</div>
+      <div style="font-family:Play;font-weight:900;font-size:96px;line-height:1;color:#fff">910 999 015</div></div>
+    </div></div>
+    <div class="w" id="cA" style="top:1130px"><div class="pill" style="padding:18px 40px"><svg viewBox="0 0 24 24" style="width:46px;height:46px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span class="play" style="font-size:44px;font-weight:700">Rua Biarritz 4B · Estoril</span></div></div>
+  </div>
+</div>
+<script type="module" src="main.js"></script>
+</body></html>

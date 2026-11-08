@@ -1,5 +1,5 @@
 import numpy as np, wave
-SR=44100; DUR=25.0; N=int(SR*DUR)
+SR=44100; DUR=28.0; N=int(SR*DUR)
 M=np.zeros((2,N)); X=np.zeros((2,N))   # music bus, sfx bus
 rs=np.random.RandomState(11)
 def put(bus,sig,t0,pan=0.,g=1.):
@@ -65,13 +65,14 @@ mel=[('D4',1),
 ('G4',1),('G4',.5),('A4',.5),('G4',.5),('F#4',.5), ('E4',1),('E4',1),('E4',1), ('A4',1),('A4',.5),('B4',.5),('A4',.5),('G4',.5), ('F#4',1),('D4',1),('D4',1),
 ('B4',1),('B4',.5),('C5',.5),('B4',.5),('A4',.5), ('G4',1),('E4',1),('D4',.5),('D4',.5), ('E4',1),('A4',1),('F#4',1), ('G4',2),('D4',1),
 ('G4',1),('G4',1),('G4',1), ('F#4',2),('F#4',1), ('G4',1),('F#4',1),('E4',1), ('D4',2),('A4',1),
+('B4',1),('A4',1),('G4',1), ('D5',1),('D4',1),('D4',.5),('D4',.5), ('E4',1),('A4',1),('F#4',1), ('G4',2),('A4',1),
 ('B4',1),('A4',1),('G4',1), ('D5',1),('D4',1),('D4',.5),('D4',.5), ('E4',1),('A4',1),('F#4',1), ('G4',3)]
 t=t0
 for n,d in mel:
     put(M,mbox(hz(mid(n)+12),2.6,.26),t,pan=.12); t+=d*beat
 mel_end=t
 CH={'G':[55,59,62],'C':[48,52,55],'A7':[57,61,64,67],'D':[50,54,57],'B7':[47,51,54,57],'Em':[52,55,59],'D7':[50,54,57,60]}
-bars=['G','C','A7','D','B7','Em','C','G','G','D','Em','D','G','D7','C','G']
+bars=['G','C','A7','D','B7','Em','C','G','G','D','Em','D','G','D7','C','G','G','D7','C','G']
 for i,c in enumerate(bars):
     tb=t0+beat+i*1.25; ch=CH[c]
     put(M,bassp(hz(ch[0]-12),1.2,.28),tb)
@@ -80,55 +81,59 @@ for i,c in enumerate(bars):
     if i==6: put(M,bassp(hz(50-12),.6,.2),tb+2*beat)
     put(M,pad([hz(x) for x in ch[:3]],1.35,.04),tb)
 # final chord tag
-tb=t0+beat+16*1.25
+tb=t0+beat+20*1.25
 for k,x in enumerate([67,71,74,79,83,86]): put(M,mbox(hz(x+12),3,.12),tb+.5+k*.07,pan=-.5+k*.2)
 put(M,pad([hz(55),hz(59),hz(62)],3.0,.05),tb)
 # intro: anticipation celesta arpeggio during box spin
 for i,x in enumerate([79,83,86,91,86,83,79,83,86,91,95,91]):
     put(M,celesta(hz(x),1.0,.06),0.05+i*.125,pan=np.sin(i)*.5)
 
-# ================= SFX (synced to index.html timeline) =================
+# ================= SFX (synced to index.html timeline, v2 fotos reais) =================
 put(X,whoosh(1.3,.10,300,1500),0.05)                      # box spinning
 put(X,rustle(.28,.22),1.38); put(X,rustle(.18,.15),1.5)   # ribbon pull
 put(X,pop(.35,520),1.6); put(X,thud(.25,140),1.6)         # lid pops
-sparkle(1.62,.95,.05,30,86,110,1)                         # particles fly to text
-put(X,whoosh(.9,.22,250,2500),3.0)                        # dive through text
-put(X,boom(.55),3.72); 
-for k,x in enumerate([67,74,79,83]): put(X,bell(hz(x),2.5,.05),3.74+k*.02)  # title hit
-for a in(6.2,8.6,10.8,13.0): put(X,whoosh(.65,.16,350,2600),a-.02,pan=0)   # camera transits
-for a in(6.8,9.2,11.4): put(X,tick(.07,2400),a)                            # card lands
-put(X,boom(.45,52),13.58)                                  # BRUNCH a vontade
-put(X,pop(.1,700),14.35)                                   # music pill
-# karaoke word ticks
-CAPS=[[0.2,1.55,'Um presente de Natal para si…'],[4.25,6.15,'Croissants dourados para começar bem o dia'],
- [6.85,8.55,'Panetones com sabor a Natal'],[9.25,10.75,'Frutas frescas e coloridas'],[11.45,12.95,'Bolos e docinhos inspirados nas tradições natalinas'],
- [14.7,15.95,'Sirva-se à vontade, ao som de música ao vivo']]
+sparkle(1.65,.7,.05,18,79,103,4)                          # logo rises & spins out of the box
+for k,x in enumerate([79,83,86,91]): put(X,bell(hz(x),2.4,.045),2.38+k*.03)   # logo settles
+put(X,celesta(hz(103),.8,.06),2.6); put(X,celesta(hz(110),.8,.05),2.75)       # shine sweep glint
+sparkle(2.1,.85,.05,28,86,110,1)                          # particles fly into the hook text
+put(X,whoosh(.9,.22,250,2500),3.55)                       # dive through text
+put(X,thud(.22,110),4.28); put(X,tick(.06,2200),4.3)      # lands on 'sala'
+HOLDS=[[4.3,6.3],[6.75,9.2],[9.65,11.4],[11.85,13.6],[14.05,16.0],[16.45,18.6]]
+for k in range(5): put(X,whoosh(.5,.16,350,2600),HOLDS[k][1]-.03)          # camera transits
+for k in (2,3,4): put(X,tick(.07,2400),HOLDS[k][0])                        # card lands
+put(X,boom(.55),6.82)
+for k,x in enumerate([67,74,79,83]): put(X,bell(hz(x),2.5,.05),6.85+k*.02)  # BRUNCH DE NATAL letters
+put(X,boom(.45,52),16.45)                                  # BRUNCH a vontade
+put(X,pop(.1,700),17.2)                                    # music pill
+CAPS=[[0.2,1.55,'Um presente de Natal para si…'],[4.45,6.25,'O nosso espaço em Estoril'],[7.15,9.15,'Um espaço para partilhar bons momentos'],
+ [9.8,11.35,'Panetones recheados'],[12.0,13.55,'Doces cobertos de chocolate'],[14.2,15.95,'Árvores de Natal de chocolate, perfeitas para oferecer'],
+ [17.35,18.55,'Sirva-se à vontade, ao som de música ao vivo']]
 for a,b,txt in CAPS:
     w=txt.split(' '); n=len(w); sp=b-a-.35
     for i in range(n): put(X,tick(.022,3000+i*60),a+sp*i/n)
-put(X,whoosh(.6,.15,600,1800)[::-1].copy(),15.95)          # pull back (reverse whoosh)
-for i in range(10): put(X,pop(.09,650+i*45),16.5+i*.11,pan=(i%3-1)*.4)    # chips pop
-sparkle(17.35,.6,.035,14,91,103,2)                          # "e muitas outras delicias"
-put(X,whoosh_up(.75,.22),17.95)                             # camera rises to price stage
-for k,(dt,g) in enumerate([(0.364,.5),(0.727,.25),(0.909,.12)]): put(X,thud(g,95),18.25+.65*dt)  # card bounces
+put(X,whoosh(.55,.15,600,1800)[::-1].copy(),18.55)         # move to 'inclui'
+for i in range(10): put(X,pop(.09,650+i*45),19.1+i*.11,pan=(i%3-1)*.4)    # chips pop
+sparkle(20.15,.6,.035,14,91,103,2)                          # "e muitas outras delicias"
+put(X,whoosh_up(.75,.22),20.85)                             # camera rises to price stage
+for k,(dt,g) in enumerate([(0.364,.5),(0.727,.25),(0.909,.12)]): put(X,thud(g,95),21.05+.65*dt)  # card bounces
 frac=lambda x:x-np.floor(x)
-for i in range(36): put(X,clink(2600+frac(i*.37)*1800,.05),18.2+frac(i*0.618034)*1.6+0.884,pan=frac(i*.371)-.5)
-for i in range(14): put(X,clink(3400+frac(i*.29)*1500,.04),18.2+frac(i*0.618034+.37)*1.6+0.884,pan=frac(i*.371+.48)-.5)
-# price counter ticks: each euro step
+for i in range(36): put(X,clink(2600+frac(i*.37)*1800,.05),21.0+frac(i*0.618034)*1.6+0.884,pan=frac(i*.371)-.5)
+for i in range(14): put(X,clink(3400+frac(i*.29)*1500,.04),21.0+frac(i*0.618034+.37)*1.6+0.884,pan=frac(i*.371+.48)-.5)
 for n in range(1,20):
-    k=1-(1-n/19.9)**(1/3); put(X,tick(.035,1800+n*60),18.6+.8*k)
-for k,x in enumerate([84,88,91,96]): put(X,bell(hz(x),2.0,.06),19.4+k*.035)    # ka-ching
-put(X,clink(4200,.08),19.4); put(X,clink(5200,.06),19.43)
-put(X,whoosh(.25,.12,2000,6000),20.03)                      # strike-through swish
-put(X,thud(.4,70),20.5); put(X,pop(.12,300),20.5)           # seal stamp
-put(X,whoosh(.6,.12,300,2000),20.9)
-for i,x in enumerate([83,86,88,91,93,95]): put(X,bell(hz(x),2.8,.07),21.0+i*.09+.33,pan=-.7+i*.28)  # baubles ring as they land
-put(X,whoosh(.35,.12,800,3000),21.55,pan=-.6); put(X,whoosh(.35,.12,800,3000),21.75,pan=.6)
-sparkle(22.05,.7,.03,14,88,100,3)
-put(X,pop(.2,600),22.62)
-for a in(22.65,24.85):                                       # phone trill on shake
+    k=1-(1-n/19.9)**(1/3); put(X,tick(.035,1800+n*60),21.4+.8*k)      # counter: one tick per euro
+for k,x in enumerate([84,88,91,96]): put(X,bell(hz(x),2.0,.06),22.2+k*.035)    # ka-ching
+put(X,clink(4200,.08),22.2); put(X,clink(5200,.06),22.23)
+put(X,whoosh(.25,.12,2000,6000),22.83)                      # strike-through swish
+put(X,thud(.42,70),23.36); put(X,pop(.12,300),23.36)        # seal stamp
+put(X,whoosh(.6,.12,300,2000),24.1)
+for i,x in enumerate([83,86,88,91,93,95]): put(X,bell(hz(x),2.8,.07),24.2+i*.09+.33,pan=-.7+i*.28)  # baubles ring on landing
+put(X,celesta(hz(98),.9,.06),24.45); put(X,celesta(hz(103),.9,.05),24.55)  # logo pops in CTA
+put(X,whoosh(.35,.12,800,3000),24.7,pan=-.6); put(X,whoosh(.35,.12,800,3000),24.9,pan=.6)
+sparkle(25.2,.7,.03,14,88,100,3)
+put(X,pop(.2,600),25.77)
+for a in(25.8,27.6):                                         # phone trill on shake
     for j in range(6): put(X,celesta(hz(100 if j%2 else 96),.12,.05),a+j*.07)
-put(X,pop(.1,800),23.0)
+put(X,pop(.1,800),26.15)
 
 # ================= mix =================
 def rev(x,seed,dur=2.4,dec=2.4):

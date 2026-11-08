@@ -1,0 +1,291 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Play;src:url(fonts/Playfair.ttf)}
+@font-face{font-family:PlayI;src:url(fonts/PlayfairItalic.ttf)}
+@font-face{font-family:Vibes;src:url(fonts/GreatVibes.ttf)}
+@font-face{font-family:Cinzel;src:url(fonts/Cinzel.ttf)}
+@font-face{font-family:Mont;src:url(fonts/Montserrat.ttf)}
+:root{--bur:#6d0f1c;--deep:#2a0509;--gold:#e5bd6c;--gold2:#f8e2a6;--cream:#fff4e2;--red:#a3192b}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--deep)}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#7a1422 0%,#3d0811 60%,#1c0306 100%)}
+.abs{position:absolute;left:0;top:0;width:100%;height:100%}
+.bgimg{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:0;will-change:transform}
+.scene{position:absolute;inset:0;opacity:0}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.goldtxt{background:linear-gradient(105deg,#b8862f 0%,#f3d58e 30%,#fff7dc 45%,#f3d58e 55%,#b8862f 80%,#e5bd6c 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.cinzel{font-family:Cinzel;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.vibes{font-family:Vibes}
+.play{font-family:Play;font-weight:900}
+.mont{font-family:Mont}
+.pill{display:inline-flex;align-items:center;gap:22px;padding:22px 44px;border-radius:999px;border:3px solid var(--gold);background:linear-gradient(180deg,#8d1626,#560a15);color:var(--cream);box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,220,150,.15)}
+.pill svg{width:54px;height:54px;fill:var(--gold2)}
+.tshadow{text-shadow:0 6px 30px rgba(0,0,0,.6)}
+.divider{width:520px;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.chip{font-family:Mont;font-weight:700;font-size:40px;color:var(--cream);padding:18px 34px;border-radius:999px;border:2.5px solid var(--gold);background:rgba(109,15,28,.85);box-shadow:0 8px 24px rgba(0,0,0,.4);display:inline-block;margin:12px}
+.pine{position:absolute;opacity:.95}
+</style></head>
+<body><div id="stage">
+  <img class="bgimg" id="bCro" src="assets/salaclientes.jpg" style="width:2875px;left:-897px">
+  <img class="bgimg" id="bCake" src="assets/panetone.jpg" style="object-position:72% 50%">
+  <img class="bgimg" id="bFruit" src="assets/doces.jpg">
+  <img class="bgimg" id="bMuf" src="assets/arvores.jpg">
+  <img class="bgimg" id="bBuf" src="assets/buffet1.jpg">
+  <img class="bgimg" id="bBlur" src="assets/buffet2.jpg" style="filter:blur(14px) brightness(.55) saturate(1.2)">
+  <img class="bgimg" id="bCakeBlur" src="assets/panetone.jpg" style="filter:blur(16px) brightness(.5) saturate(1.2)">
+  <img class="bgimg" id="bSalaM" src="assets/salamesas.jpg" style="width:2875px;left:-897px;filter:blur(5px) brightness(.45) saturate(1.1)">
+  <div class="abs" id="grade" style="background:linear-gradient(180deg,rgba(42,5,9,.85) 0%,rgba(42,5,9,.15) 30%,rgba(42,5,9,.1) 55%,rgba(42,5,9,.9) 100%)"></div>
+  <div class="abs" id="tint" style="background:#5a0c18;mix-blend-mode:multiply;opacity:0"></div>
+  <canvas id="fx" width="1080" height="1920" class="abs"></canvas>
+
+  <img class="pine" id="pTR" src="assets/pineTR.jpg" style="right:0;top:0;width:400px;-webkit-mask-image:radial-gradient(ellipse at 100% 0%,#000 45%,transparent 72%)">
+  <img class="pine" id="pBL" src="assets/pineBL.jpg" style="left:0;bottom:0;width:480px;-webkit-mask-image:radial-gradient(circle at 0% 100%,#000 38%,transparent 62%)">
+  <img class="pine" id="pBR" src="assets/pineBR.jpg" style="right:0;bottom:0;width:480px;-webkit-mask-image:radial-gradient(circle at 100% 100%,#000 38%,transparent 62%)">
+
+  <!-- S1 HOOK -->
+  <div class="scene center" id="s1">
+    <img id="s1a" src="assets/logo.png" style="width:300px;margin-bottom:50px;filter:drop-shadow(0 6px 20px rgba(0,0,0,.6))">
+    <div id="s1b" style="font-family:PlayI;font-size:92px;color:var(--cream)" class="tshadow">Tem planos para</div>
+    <div id="s1c" class="vibes goldtxt" style="font-size:190px;line-height:1.25;padding:0 40px">5 de dezembro?</div>
+    <div class="divider" id="s1d" style="margin:30px 0"></div>
+    <div id="s1e" class="mont tshadow" style="font-size:44px;color:var(--cream);font-weight:500">Nós guardámos uma mesa para si…</div>
+  </div>
+
+  <!-- S2 TITLE -->
+  <div class="scene center" id="s2" style="justify-content:flex-start;padding-top:330px;background:radial-gradient(ellipse 80% 28% at 50% 27%,rgba(42,5,9,.78),transparent)">
+    <div id="s2a" class="cinzel tshadow" style="font-size:42px;color:var(--cream)">Uma mesa para partilhar</div>
+    <div id="s2b" class="vibes goldtxt" style="font-size:150px;line-height:1.2;padding:0 30px">bons momentos</div>
+    <div id="s2t1" class="play goldtxt" style="font-size:230px;line-height:1;filter:drop-shadow(0 8px 20px rgba(0,0,0,.7))">BRUNCH</div>
+    <div id="s2t2" class="play goldtxt" style="font-size:180px;line-height:1.05;filter:drop-shadow(0 8px 20px rgba(0,0,0,.7))">DE NATAL</div>
+  </div>
+
+  <!-- S3 CUTS -->
+  <div class="scene" id="s3">
+    <div id="s3h" class="cinzel tshadow center" style="position:absolute;left:0;right:0;top:300px;font-size:38px;color:var(--gold2)">Doces de Natal da casa</div>
+    <div id="s3l" style="position:absolute;left:0;right:0;top:1180px;display:flex;justify-content:center">
+      <div class="pill"><span id="s3txt" class="play" style="font-size:76px;font-weight:800;font-style:italic;font-family:PlayI">Panetones</span></div>
+    </div>
+  </div>
+
+  <!-- S4 ALL YOU CAN EAT -->
+  <div class="scene center" id="s4" style="justify-content:flex-start;padding-top:360px;background:radial-gradient(ellipse 70% 30% at 50% 33%,rgba(42,5,9,.7),transparent)">
+    <div id="s4i" style="width:150px;height:150px;border-radius:50%;border:4px solid var(--gold);background:radial-gradient(#8d1626,#4e0912);display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px rgba(229,189,108,.5)">
+      <svg viewBox="0 0 24 24" style="width:80px;fill:var(--gold2)"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
+    </div>
+    <div id="s4a" class="play goldtxt" style="font-size:200px;line-height:1.05;margin-top:30px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.8))">BRUNCH</div>
+    <div id="s4b" class="vibes" style="text-shadow:0 0 30px #2a0509,0 0 12px #2a0509,0 6px 20px rgba(0,0,0,.9);font-size:170px;color:var(--cream);line-height:1;margin-top:-10px">à vontade</div>
+    <div id="s4c" style="position:absolute;top:1230px;left:0;right:0;display:flex;justify-content:center">
+      <div class="pill">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        <span class="mont" style="font-size:46px;font-weight:700">Música ao vivo suave</span>
+        <div id="eq" style="display:flex;gap:7px;align-items:flex-end;height:50px"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 INCLUDES -->
+  <div class="scene center" id="s5" style="padding:0 60px">
+    <div id="s5a" class="play goldtxt" style="font-size:110px;line-height:1.1">O brunch inclui</div>
+    <div class="divider" id="s5d" style="margin:26px 0 30px"></div>
+    <div id="chips" style="display:flex;flex-wrap:wrap;justify-content:center;width:960px"></div>
+    <div id="s5b" class="vibes goldtxt" style="font-size:110px;margin-top:30px;padding:0 30px">e muitas outras delícias…</div>
+  </div>
+
+  <!-- S6 PRICE -->
+  <div class="scene center" id="s6">
+    <div id="s6card" style="width:820px;padding:60px 50px 50px;border-radius:44px;background:linear-gradient(170deg,#fffaf0,#f6e3c4);border:5px solid var(--gold);box-shadow:0 30px 90px rgba(0,0,0,.6);text-align:center;position:relative">
+      <div class="cinzel" style="font-size:34px;color:var(--red)">Brunch à vontade</div>
+      <div style="font-family:Play;font-weight:900;font-size:230px;line-height:1;color:#7a1020;letter-spacing:-4px"><span id="price">19,90</span>€</div>
+      <div class="play" style="font-size:54px;color:#3a0a10;font-weight:700">por pessoa</div>
+      <div style="height:3px;background:linear-gradient(90deg,transparent,#a3192b,transparent);margin:36px 0"></div>
+      <div id="fam">
+        <div class="play" style="font-size:48px;color:#3a0a10;font-weight:700">Bilhete família · 4 pessoas</div>
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:30px;margin-top:6px">
+          <span class="mont" id="old" style="font-size:52px;color:#8a6a5a;font-weight:600;position:relative">79,60€<i id="strike" style="position:absolute;left:-6px;top:52%;height:5px;background:#a3192b;width:0"></i></span>
+          <span style="font-family:Play;font-weight:900;font-size:120px;color:#a3192b">69,90€</span>
+        </div>
+      </div>
+      <div id="seal" style="position:absolute;right:-70px;top:-80px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fbe4a4,#d9a845 60%,#a87a25);box-shadow:0 12px 30px rgba(0,0,0,.5),inset 0 0 0 8px rgba(255,255,255,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#5a0a14">
+        <div class="mont" style="font-size:30px;font-weight:800;letter-spacing:.08em">POUPE</div>
+        <div style="font-family:Play;font-weight:900;font-size:62px;line-height:1">9,70€</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7 CTA -->
+  <div class="scene center" id="s7" style="justify-content:flex-start;padding-top:235px">
+    <img id="s7logo" src="assets/logo.png" style="width:190px;margin-bottom:22px;filter:drop-shadow(0 6px 20px rgba(0,0,0,.7))">
+    <div id="s7t" class="play goldtxt" style="font-size:76px;line-height:1.05;filter:drop-shadow(0 6px 16px rgba(0,0,0,.8))">BRUNCH DE NATAL</div>
+    <div id="s7row" style="display:flex;flex-direction:column;gap:20px;align-items:center;margin-top:30px">
+      <div class="pill" id="pDate"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg><span class="mont" style="font-size:48px;font-weight:700">Sábado, 5 de dezembro</span></div>
+      <div class="pill" id="pTime"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg><span class="mont" style="font-size:48px;font-weight:700">das 10h às 14h</span></div>
+    </div>
+    <div id="s7r" class="vibes goldtxt" style="font-size:104px;margin-top:22px;padding:0 30px">Reserve já a sua mesa</div>
+    <div id="phone" style="margin-top:10px;display:flex;align-items:center;gap:34px;padding:34px 60px 34px 40px;border-radius:999px;border:5px solid var(--gold);background:linear-gradient(180deg,#a3192b,#5e0a16);box-shadow:0 0 0 0 rgba(229,189,108,.6),0 20px 60px rgba(0,0,0,.6)">
+      <div id="ring" style="width:130px;height:130px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 24 24" style="width:76px;fill:#7a1020"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      </div>
+      <div style="text-align:left">
+        <div class="cinzel" style="font-size:34px;color:var(--gold2)">Reservas</div>
+        <div style="font-family:Play;font-weight:900;font-size:104px;line-height:1;color:#fff">910 999 015</div>
+      </div>
+    </div>
+    <div class="pill" id="pAddr" style="margin-top:24px;padding:18px 40px"><svg viewBox="0 0 24 24" style="width:46px;height:46px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span class="play" style="font-size:44px;font-weight:700">Rua Biarritz 4B · Estoril</span></div>
+  </div>
+
+  <img id="wm" src="assets/logo.png" style="position:absolute;left:44px;top:235px;width:112px;opacity:0;filter:drop-shadow(0 3px 8px rgba(0,0,0,.6))">
+  <div id="ilus" class="mont" style="position:absolute;left:44px;bottom:380px;font-size:24px;color:rgba(255,244,226,.72);letter-spacing:.04em;opacity:0;text-shadow:0 2px 6px rgba(0,0,0,.8)">Imagem ilustrativa</div>
+  <div class="abs" id="leak" style="background:radial-gradient(ellipse at 20% 30%,rgba(255,190,90,.95),rgba(255,120,40,.5) 35%,transparent 70%);mix-blend-mode:screen;opacity:0"></div>
+  <div class="abs" id="flash" style="background:#fff6e0;opacity:0"></div>
+  <div class="abs" style="background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(20,2,5,.75) 100%);pointer-events:none"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const lerp=(a,b,k)=>a+(b-a)*k;
+const eOut=k=>1-Math.pow(1-k,3);
+const eInOut=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+const eBack=k=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2)};
+const eElastic=k=>k===0?0:k===1?1:Math.pow(2,-10*k)*Math.sin((k*10-.75)*(2*Math.PI)/3)+1;
+// window visibility with fades
+const win=(t,a,b,fi=.3,fo=.3)=>Math.min(seg(t,a,a+fi),1-seg(t,b-fo,b));
+
+// split title letters
+function split(id){const el=$(id);const txt=el.textContent;el.textContent='';
+  return [...txt].map(ch=>{const s=document.createElement('span');s.textContent=ch===' '?' ':ch;s.style.display='inline-block';
+    s.className=el.className.includes('goldtxt')?'goldtxt':'';el.classList.remove('goldtxt');el.appendChild(s);return s;});}
+const L1=split('s2t1'),L2=split('s2t2');
+// fix goldtxt per-span keeps gradient; re-add class to spans
+[...L1,...L2].forEach(s=>s.classList.add('goldtxt'));
+
+const items=['Bebidas','Cafés','Bolos','Sobremesas','Pães','Panquecas','Pão de queijo','Frutas','Iogurte','Ovos'];
+const chips=items.map(n=>{const d=document.createElement('div');d.className='chip';d.textContent=n;$('chips').appendChild(d);return d;});
+const eqBars=[...document.querySelectorAll('#eq i')];eqBars.forEach(b=>{b.style.cssText='display:block;width:9px;background:#f8e2a6;border-radius:4px'});
+
+// particles
+function rng(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646}}
+const R=rng(42);
+const snow=[...Array(90)].map(()=>({x:R()*1080,y:R()*1920,s:R()*1.6+.6,v:R()*60+40,ph:R()*6.28,a:R()*.5+.35,gold:R()<.45}));
+const bokeh=[...Array(14)].map(()=>({x:R()*1080,y:R()*1920,r:R()*90+40,v:R()*20+8,ph:R()*6.28,a:R()*.18+.08}));
+const ctx=$('fx').getContext('2d');
+function drawFx(t,intensity){
+  ctx.clearRect(0,0,1080,1920);
+  for(const b of bokeh){const y=((b.y-b.v*t)%2100+2100)%2100-90,x=b.x+Math.sin(t*.4+b.ph)*30;
+    const g=ctx.createRadialGradient(x,y,0,x,y,b.r);g.addColorStop(0,`rgba(255,215,140,${b.a*intensity})`);g.addColorStop(.6,`rgba(255,190,100,${b.a*.5*intensity})`);g.addColorStop(1,'rgba(255,190,100,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,b.r,0,7);ctx.fill();}
+  for(const p of snow){const y=(p.y+p.v*t)%1960-20,x=p.x+Math.sin(t*1.2+p.ph)*25;const tw=.6+.4*Math.sin(t*4+p.ph*3);
+    const r=p.s*4;const g=ctx.createRadialGradient(x,y,0,x,y,r*2.4);
+    const c=p.gold?'255,214,140':'255,250,240';g.addColorStop(0,`rgba(${c},${p.a*tw*intensity})`);g.addColorStop(1,`rgba(${c},0)`);
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*2.4,0,7);ctx.fill();}
+}
+
+function setImg(id,op,scale,tx=0,ty=0){const e=$(id);e.style.opacity=op;e.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;}
+function setT(id,op,tr=''){const e=$(id);e.style.opacity=op;e.style.transform=tr;}
+function shine(el,t,speed=.35,off=0){el.style.backgroundPosition=`${(100-((t*speed+off)%1)*100*1.6+30)}% 0`;}
+
+const T={s1:[0,2.8],s2:[2.8,6.0],s3:[6.0,9.0],s4:[9.0,12.2],s5:[12.2,15.6],s6:[15.6,19.6],s7:[19.6,25]};
+const CUTS=[2.8,6.0,7.0,8.0,9.0,12.2,15.6,19.6];
+window.DUR=25;
+
+function render(t){
+  // images
+  setImg('bCro',win(t,2.6,6.1,.25,.1),lerp(1.25,1.05,eOut(seg(t,2.8,6))),lerp(-320,260,eInOut(seg(t,2.8,6))),0);
+  const cut=(id,a,b,z0,z1,tx0,tx1)=>setImg(id,win(t,a,b,.05,.05),lerp(z0,z1,eOut(seg(t,a,b))),lerp(tx0,tx1,seg(t,a,b)));
+  cut('bCake',6.0,7.05,1.3,1.08,0,0);
+  cut('bFruit',7.0,8.05,1.1,1.3,-60,60);
+  cut('bMuf',8.0,9.1,1.35,1.1,0,0);
+  setImg('bBuf',win(t,9.0,12.4,.08,.3),lerp(1.15,1.3,seg(t,9,12.4)),lerp(-120,120,eInOut(seg(t,9,12.4))));
+  setImg('bBlur',win(t,12.1,15.8,.3,.3),lerp(1.1,1.2,seg(t,12,15.8)));
+  setImg('bSalaM',win(t,19.4,25.5,.4,.01),lerp(1.05,1.15,seg(t,19.4,25)),lerp(200,-200,seg(t,19.4,25)));
+  $('wm').style.opacity=win(t,2.9,19.6,.4,.3)*.62;
+  $('ilus').style.opacity=win(t,9.05,15.6,.3,.3);
+  { const kl=seg(t,19.65,20.2); $('s7logo').style.opacity=kl; $('s7logo').style.transform=`scale(${lerp(.6,1,eBack(kl))})`; }
+  setImg('bCakeBlur',win(t,15.5,19.8,.3,.3),lerp(1.1,1.2,seg(t,15.5,19.8)));
+  $('tint').style.opacity=t<2.8?0:.18;
+  $('grade').style.opacity=1;
+
+  // fx intensity
+  drawFx(t,t<2.8?1:(t>12.2&&t<15.6)||t>15.6?.9:.65);
+  const pineOp=win(t,0,2.9,.6,.3)*0.95+win(t,15.6,25.5,.4,.01)*0.95;
+  ['pTR','pBL','pBR'].forEach((id,i)=>{setT(id,pineOp,`rotate(${Math.sin(t*1.3+i)*1.2}deg)`); $(id).style.transformOrigin=i==0?'100% 0':i==1?'0 100%':'100% 100%';});
+
+  // S1
+  $('s1').style.opacity=win(t,0,2.85,.01,.25);
+  setT('s1a',seg(t,.05,.5),`scale(${lerp(.7,1,eBack(seg(t,.05,.6)))})`);
+  setT('s1b',seg(t,.2,.8),`translateY(${lerp(40,0,eOut(seg(t,.2,.8)))}px)`);
+  const k1=seg(t,.6,1.5);
+  $('s1c').style.opacity=k1>0?1:0;$('s1c').style.clipPath=`inset(0 ${100-eInOut(k1)*100}% 0 0)`;shine($('s1c'),t,.5);
+  $('s1d').style.transform=`scaleX(${eOut(seg(t,1.3,1.9))})`;
+  setT('s1e',seg(t,1.6,2.1),`translateY(${lerp(20,0,eOut(seg(t,1.6,2.1)))}px)`);
+  $('s1').style.transform=`scale(${lerp(1,1.08,seg(t,2.4,2.85))})`;
+
+  // S2
+  $('s2').style.opacity=win(t,2.8,6.0,.05,.15);
+  setT('s2a',seg(t,2.9,3.3),`translateY(${lerp(-30,0,eOut(seg(t,2.9,3.3)))}px)`);
+  const kb=seg(t,3.1,3.9);$('s2b').style.opacity=kb>0?1:0;$('s2b').style.clipPath=`inset(0 ${100-eInOut(kb)*100}% 0 0)`;shine($('s2b'),t,.5);
+  [...L1,...L2].forEach((s,i)=>{const a=3.35+i*0.055,k=seg(t,a,a+.45);
+    s.style.opacity=clamp(k*3);s.style.transform=`translateY(${lerp(-160,0,eBack(k))}px) scale(${lerp(1.6,1,eOut(k))})`;
+    s.style.filter=`blur(${lerp(10,0,k)}px)`;shine(s,t,.45,i*.015)});
+  $('s2').style.transform=`scale(${lerp(1,1.04,seg(t,4.5,6))})`;
+
+  // S3
+  $('s3').style.opacity=win(t,6.0,9.0,.05,.08);
+  const idx=t<7?0:t<8?1:2;const lab=['Panetones recheados','Cobertos de chocolate','Árvores de chocolate'][idx];
+  if($('s3txt').textContent!==lab)$('s3txt').textContent=lab;
+  const ls=6+idx;const kl=seg(t,ls+.05,ls+.4);
+  setT('s3l',clamp(kl*2)*(1-seg(t,ls+.85,ls+1)),`translateX(${lerp(idx%2?-500:500,0,eBack(kl))}px)`);
+  setT('s3h',seg(t,6.1,6.5),`translateY(${lerp(-20,0,eOut(seg(t,6.1,6.5)))}px)`);
+
+  // S4
+  $('s4').style.opacity=win(t,9.0,12.2,.05,.25);
+  const ki=seg(t,9.1,9.6);setT('s4i',clamp(ki*2),`scale(${eBack(ki)}) rotate(${lerp(-180,0,eOut(ki))}deg)`);
+  const ka=seg(t,9.35,9.85);setT('s4a',clamp(ka*2),`scale(${lerp(2.2,1,eOut(ka))})`);$('s4a').style.letterSpacing=lerp(40,0,eOut(ka))+'px';shine($('s4a'),t,.4);
+  const kv=seg(t,9.8,10.6);$('s4b').style.opacity=kv>0?1:0;$('s4b').style.clipPath=`inset(0 ${100-eInOut(kv)*100}% 0 0)`;
+  const kc=seg(t,10.5,11);setT('s4c',clamp(kc*2),`translateY(${lerp(120,0,eBack(kc))}px)`);
+  eqBars.forEach((b,i)=>b.style.height=(14+Math.abs(Math.sin(t*(7+i*1.7)+i))*34)+'px');
+
+  // S5
+  $('s5').style.opacity=win(t,12.2,15.6,.25,.25);
+  setT('s5a',seg(t,12.3,12.8),`translateY(${lerp(-40,0,eOut(seg(t,12.3,12.8)))}px)`);shine($('s5a'),t,.4);
+  $('s5d').style.transform=`scaleX(${eOut(seg(t,12.6,13.1))})`;
+  chips.forEach((c,i)=>{const a=12.75+i*.13,k=seg(t,a,a+.4);c.style.opacity=clamp(k*2);c.style.transform=`scale(${eBack(k)})`;
+    const hl=seg(t,14.3+i*.05,14.5+i*.05)-seg(t,14.55+i*.05,14.8+i*.05);c.style.background=hl>0?`rgba(${lerp(109,190,hl)},${lerp(15,140,hl)},${lerp(28,60,hl)},.9)`:'rgba(109,15,28,.85)';});
+  const k5=seg(t,14.2,15);$('s5b').style.opacity=k5>0?1:0;$('s5b').style.clipPath=`inset(0 ${100-eInOut(k5)*100}% 0 0)`;shine($('s5b'),t,.5);
+
+  // S6
+  $('s6').style.opacity=win(t,15.6,19.6,.1,.3);
+  const kcard=seg(t,15.65,16.25);setT('s6card',1,`scale(${lerp(.3,1,eBack(kcard))}) rotate(${lerp(-8,0,eOut(kcard))}deg)`);
+  const kp=eOut(seg(t,16.0,16.9));$('price').textContent=(19.9*kp).toFixed(2).replace('.',',');
+  $('price').parentElement.style.transform=`scale(${1+Math.max(0,Math.sin(seg(t,16.9,17.2)*Math.PI))*.12})`;
+  const kf=seg(t,17.4,17.9);setT('fam',clamp(kf*2),`translateY(${lerp(40,0,eOut(kf))}px)`);
+  $('strike').style.width=(eOut(seg(t,18.0,18.3))*112)+'%';
+  const ks=seg(t,18.3,18.9);setT('seal',clamp(ks*3),`scale(${eElastic(ks)}) rotate(${lerp(-90,12,eOut(ks))+Math.sin(t*3)*3}deg)`);
+  $('s6').style.transform=`scale(${lerp(1,1.03,seg(t,16.3,19.6))})`;
+
+  // S7
+  $('s7').style.opacity=win(t,19.6,26,.25,.01);
+  const kt=seg(t,19.7,20.2);setT('s7t',clamp(kt*2),`translateY(${lerp(-50,0,eOut(kt))}px)`);shine($('s7t'),t,.35);
+  const kd=seg(t,20.0,20.45);setT('pDate',clamp(kd*2),`translateX(${lerp(-700,0,eBack(kd))}px)`);
+  const kh=seg(t,20.2,20.65);setT('pTime',clamp(kh*2),`translateX(${lerp(700,0,eBack(kh))}px)`);
+  const kr=seg(t,20.6,21.4);$('s7r').style.opacity=kr>0?1:0;$('s7r').style.clipPath=`inset(0 ${100-eInOut(kr)*100}% 0 0)`;shine($('s7r'),t,.5);
+  const kph=seg(t,21.2,21.7);const pulse=t>21.7?(Math.sin((t-21.7)*Math.PI*2/1.1)*.5+.5):0;
+  setT('phone',clamp(kph*2),`scale(${eBack(kph)*(1+pulse*.035)})`);
+  const pr=t>21.7?((t-21.7)%1.1)/1.1:0;
+  $('phone').style.boxShadow=`0 0 0 ${pr*44}px rgba(229,189,108,${(1-pr)*.55}),0 20px 60px rgba(0,0,0,.6)`;
+  const ringK=t>21.8?((t-21.8)%2.2):9;$('ring').style.transform=`rotate(${ringK<.5?Math.sin(ringK*60)*14*(1-ringK/.5):0}deg)`;
+  const kad=seg(t,21.7,22.2);setT('pAddr',clamp(kad*2),`translateY(${lerp(60,0,eOut(kad))}px)`);
+
+  // transitions: flash + light leak
+  let fl=0,lk=0;for(const c of CUTS){const d=t-c;if(d>-0.05&&d<0.2)fl=Math.max(fl,(1-Math.abs(d)/0.2)*(c>=6&&c<=8.1?.55:.35));
+    if(d>-0.35&&d<0.6)lk=Math.max(lk,Math.sin(clamp((d+.35)/.95)*Math.PI)*.75);}
+  // extra flash at price reveal
+  const d2=t-16.9;if(d2>0&&d2<.25)fl=Math.max(fl,(1-d2/.25)*.3);
+  $('flash').style.opacity=fl;$('leak').style.opacity=lk;
+  $('leak').style.background=`radial-gradient(ellipse at ${20+((t*37)%60)}% ${30+((t*23)%40)}%,rgba(255,190,90,.95),rgba(255,120,40,.5) 35%,transparent 70%)`;
+}
+window.render=render;
+render(0);
+</script>
+</body></html>

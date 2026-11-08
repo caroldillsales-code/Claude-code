@@ -1,0 +1,1 @@
+Fontes em ../../source/fonts (criar symlink 'fonts'). Render: node render_v1.js a partir da pasta que contém v1real/.
